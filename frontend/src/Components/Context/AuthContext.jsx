@@ -13,7 +13,7 @@ function ContextProvider({ children }) {
 
   const login = (data) => {
     if (!data.email || !data.password) return;
-    axios.post("http://localhost:8080/user/login", data).then((res) => {
+    axios.post("https://bmi-calculator-9vne.onrender.com/user/login", data).then((res) => {
       if (res.data.msg === "Login Success") {
         setIsAuth(true)
         Toast({
@@ -51,7 +51,7 @@ function ContextProvider({ children }) {
 
   const logout = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/user/logout`);
+      const res = await axios.get(`https://bmi-calculator-9vne.onrender.com/user/logout`);
       if (res.data.message == "Logout successful") {
         localStorage.removeItem("TOKEN");
         setIsAuth(false);

@@ -15,8 +15,6 @@ function Bmi() {
     const [weight, setWeight] = useState("");
     const [height, setHeight] = useState("");
     const [message, setMessage] = useState("");
-    const [bmi, setBmi] = useState("");
-    const [exe, setExe] = useState([]);
     const toast = useToast();
 
     const calcBmi = async (e) => {
@@ -26,7 +24,7 @@ function Bmi() {
         if (!height || !weight) return;
 
         try {
-            const res = await axios.post(`http://localhost:8080/calculate/details`, { height, weight }, {
+            const res = await axios.post(`https://bmi-calculator-9vne.onrender.com/calculate/details`, { height, weight }, {
                 headers: {
                     'token': localStorage.getItem("TOKEN")
                 }

@@ -9,6 +9,7 @@ import {
     Th,
     Td,
     TableContainer,
+    Spinner,
 } from '@chakra-ui/react'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -16,12 +17,12 @@ import React, { useEffect, useState } from 'react'
 const Profile = () => {
 
     const [user, setUser] = useState({});
-    console.log(user)
     const [history, setHistory] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const getProfile = async () => {
         try {
-            const res = await axios.get(`http://localhost:8080/calculate/getProfile`, {
+            const res = await axios.get(`https://bmi-calculator-9vne.onrender.com/calculate/getProfile`, {
                 headers: {
                     'token': localStorage.getItem("TOKEN")
                 }
@@ -34,7 +35,7 @@ const Profile = () => {
 
     const getHistory = async () => {
         try {
-            const res = await axios.get(`http://localhost:8080/calculate/history`, {
+            const res = await axios.get(`https://bmi-calculator-9vne.onrender.com/calculate/history`, {
                 headers: {
                     'token': localStorage.getItem("TOKEN")
                 }
@@ -45,49 +46,59 @@ const Profile = () => {
         }
     }
 
-
     useEffect(() => {
         getProfile();
         getHistory();
     }, [])
 
+    useEffect(() => {
+        if (user.name && history.length > 0) {
+            setLoading(false);
+        }
+    }, [user, history])
+
     return (
         <div>
-            <Container>
-                <Box>
-                    <Heading>Name: {user.name}</Heading>
-                    <Heading>Email: {user.email}</Heading>
-                </Box>
-            </Container>
+            {loading ? (
+                <Spinner size="xl" color="teal" thickness="4px" speed="0.65s" emptyColor="gray.200" />
+            ) : (
+                <>
+                    <Container>
+                        <Box>
+                            <Heading>Name: {user.name}</Heading>
+                            <Heading>Email: {user.email}</Heading>
+                        </Box>
+                    </Container>
 
-            <Heading textAlign="center" margin={"auto"} mt={"100px"}>BMI Calculate History</Heading>
-            <TableContainer>
-                <Table variant='striped' colorScheme='teal'>
-                    <Thead>
-                        <Tr>
-                            <Th>S. No</Th>
-                            <Th>Height(ft)</Th>
-                            <Th>Weight(kg)</Th>
-                            <Th> BMI </Th>
-                        </Tr>
-                    </Thead>
-                    <Tbody>
-                        {
-                            history.map((e, i) => {
-                                return (
-                                    <Tr key={e._id}>
-                                        <Td>{i + 1}</Td>
-                                        <Td>{e.height}</Td>
-                                        <Td>{e.weight}</Td>
-                                        <Td>{e.bmi}</Td>
-                                    </Tr>
-                                )
-                            })
-                        }
-                    </Tbody>
-                </Table>
-            </TableContainer>
-
+                    <Heading textAlign="center" margin={"auto"} mt={"100px"}>BMI Calculate History</Heading>
+                    <TableContainer>
+                        <Table variant='striped' colorScheme='teal'>
+                            <Thead>
+                                <Tr>
+                                    <Th>S. No</Th>
+                                    <Th>Height(ft)</Th>
+                                    <Th>Weight(kg)</Th>
+                                    <Th> BMI </Th>
+                                </Tr>
+                            </Thead>
+                            <Tbody>
+                                {
+                                    history.map((e, i) => {
+                                        return (
+                                            <Tr key={e._id}>
+                                                <Td>{i + 1}</Td>
+                                                <Td>{e.height}</Td>
+                                                <Td>{e.weight}</Td>
+                                                <Td>{e.bmi}</Td>
+                                            </Tr>
+                                        )
+                                    })
+                                }
+                            </Tbody>
+                        </Table>
+                    </TableContainer>
+                </>
+            )}
         </div>
     )
 }
