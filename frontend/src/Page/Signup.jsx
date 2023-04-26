@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, FormControl, FormLabel, Input, Text, useToast } from '@chakra-ui/react'
+import { Box, Button, FormControl, FormLabel, Input,  Text, useToast } from '@chakra-ui/react'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 
@@ -10,13 +10,16 @@ const initialState = {
 }
 
 const Signup = () => {
-    const [data, setData] = useState(initialState)
-    const Toast = useToast()
-    const navigate = useNavigate()
 
+    const [data, setData] = useState(initialState);
+    const [loading, setLoading] = useState(false);
+    const Toast = useToast();
+    const navigate = useNavigate();
 
+ 
     function handleClick() {
-        axios.post("http://localhost:8080/user/signup", data).then((res) => {
+        setLoading(true);
+        axios.post("https://bmi-calculator-9vne.onrender.com/user/signup", data).then((res) => {
             if (res.data.msg === "Signup Successfull") {
                 Toast({
                     title: 'Account created.',
@@ -46,6 +49,8 @@ const Signup = () => {
                 isClosable: true,
                 position: "top"
             })
+        }).finally(() => {
+            setLoading(false)
         })
 
     }
@@ -62,10 +67,10 @@ const Signup = () => {
                 <FormLabel mt="20px"  >Name</FormLabel>
                 <Input onChange={(e) => handleChange(e)} name='name' placeholder='Full Name' />
                 <FormLabel mt="20px" >Email</FormLabel>
-                <Input onChange={(e) => handleChange(e)} name='email' placeholder='enter email' />
+                <Input onChange={(e) => handleChange(e)} name='email' placeholder='Enter email' />
                 <FormLabel mt="20px"  >Password</FormLabel>
-                <Input onChange={(e) => handleChange(e)} name='password' type={"password"} placeholder='enter password' />
-                <Input _hover={{ cursor: "Pointer" }} onClick={(e) => handleClick(e)} mt="20px" backgroundColor="grey" color="white" type="submit" />
+                <Input onChange={(e) => handleChange(e)} name='password' type={"password"} placeholder='Enter password' />
+                <Button _hover={{ cursor: "Pointer" }} onClick={(e) => handleClick(e)} mt="20px" backgroundColor="grey" color="white" type="submit" isLoading={loading} loadingText="Submitting" >Sign up</Button>
                 <Text mt="10px">Already have an account <Link to="/"><Text color={"blue"}>Login</Text></Link></Text>
             </FormControl>
         </Box>

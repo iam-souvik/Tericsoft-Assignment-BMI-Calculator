@@ -17,9 +17,12 @@ import React, { useEffect, useState } from 'react'
 const Profile = () => {
 
     const [user, setUser] = useState({});
+    console.log("user",user);
     const [history, setHistory] = useState([]);
+    console.log("history",history);
     const [loading, setLoading] = useState(true);
 
+   /// get-Profile -data
     const getProfile = async () => {
         try {
             const res = await axios.get(`https://bmi-calculator-9vne.onrender.com/calculate/getProfile`, {
@@ -33,6 +36,8 @@ const Profile = () => {
         }
     }
 
+
+    // get-history-data
     const getHistory = async () => {
         try {
             const res = await axios.get(`https://bmi-calculator-9vne.onrender.com/calculate/history`, {
@@ -60,7 +65,7 @@ const Profile = () => {
     return (
         <div>
             {loading ? (
-                <Spinner size="xl" color="teal" thickness="4px" speed="0.65s" emptyColor="gray.200" />
+                <Spinner size="xl" mt={250}  color="teal" thickness="4px" speed="0.65s" emptyColor="gray.200" />
             ) : (
                 <>
                     <Container>

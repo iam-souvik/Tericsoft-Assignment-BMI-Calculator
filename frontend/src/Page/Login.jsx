@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Box, FormControl, FormLabel, Input, Text } from '@chakra-ui/react'
+import { Box, Button, FormControl, FormLabel, Input, Text } from '@chakra-ui/react'
 import { Link } from 'react-router-dom';
 import { context } from '../Components/Context/AuthContext';
 
@@ -10,6 +10,8 @@ const initialState = {
 
 const Login = () => {
   const [data, setData] = useState(initialState)
+  const [loading, setLoading] = useState(false);
+  console.log(loading)
   const { login } = useContext(context);
 
 
@@ -21,7 +23,8 @@ const Login = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    login(data);
+    setLoading(true);
+    login(data, setLoading);
   }
 
   return (
@@ -32,7 +35,7 @@ const Login = () => {
         <Input onChange={(e) => handleChange(e)} name='email' placeholder='enter email' />
         <FormLabel mt="20px">Password</FormLabel>
         <Input onChange={(e) => handleChange(e)} name='password' type="password" placeholder='enter password' />
-        <Input _hover={{ cursor: "Pointer" }} onClick={handleClick} mt="20px" backgroundColor="grey" color="white" type="submit" />
+        <Button _hover={{ cursor: "Pointer" }} onClick={handleClick} mt="20px" backgroundColor="grey" color="white" type="submit" isLoading={loading} loadingText="Submitting">Login</Button>
         <Text mt="10px">Don't have an account <Link to="/Signup"><Text color={"blue"}>Signup</Text></Link></Text>
       </FormControl>
     </Box>

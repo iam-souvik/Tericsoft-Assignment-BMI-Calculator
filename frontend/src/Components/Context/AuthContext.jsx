@@ -11,7 +11,7 @@ function ContextProvider({ children }) {
   const Toast = useToast()
 
 
-  const login = (data) => {
+  const login = (data, setLoading) => {
     if (!data.email || !data.password) return;
     axios.post("https://bmi-calculator-9vne.onrender.com/user/login", data).then((res) => {
       if (res.data.msg === "Login Success") {
@@ -45,7 +45,7 @@ function ContextProvider({ children }) {
         position: "top"
       })
       console.log(e)
-    })
+    }).finally(() => setLoading(false))
   }
 
 
